@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/storozhukBM/combohash"
 	"hash/crc32"
-	"hash/crc64"
 	"hash/maphash"
 	"math/rand"
 	"testing"
@@ -21,7 +20,7 @@ func BenchmarkHash(b *testing.B) {
 			dif := (s*2 - s) / 3
 			n := s + (dif * j)
 
-			b.Run(fmt.Sprintf("type:crc32ieee;hash:32 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:crc32ieee;hash:32bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
@@ -29,7 +28,7 @@ func BenchmarkHash(b *testing.B) {
 					Count += int(crc32.ChecksumIEEE(target[i : i+n]))
 				}
 			})
-			b.Run(fmt.Sprintf("type:xxhash;hash:32 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:xxhash;hash:32bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
@@ -37,7 +36,7 @@ func BenchmarkHash(b *testing.B) {
 					Count += int(xxhash.Sum64(target[i : i+n]))
 				}
 			})
-			b.Run(fmt.Sprintf("type:maphash;hash:32 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:maphash;hash:32bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
@@ -48,7 +47,7 @@ func BenchmarkHash(b *testing.B) {
 					Count += int(hash.Sum64())
 				}
 			})
-			b.Run(fmt.Sprintf("type:xxh3;hash:32 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:xxh3;hash:32bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
@@ -56,7 +55,7 @@ func BenchmarkHash(b *testing.B) {
 					Count += int(xxh3.Hash(target[i : i+n]))
 				}
 			})
-			b.Run(fmt.Sprintf("type:combined;hash:32 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:combined;hash:32bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
@@ -65,18 +64,7 @@ func BenchmarkHash(b *testing.B) {
 				}
 			})
 
-			b.Run(fmt.Sprintf("type:crc64iso;hash:64 bit;bytes:%v", n), func(b *testing.B) {
-				target := make([]byte, n+b.N)
-				rand.Read(target)
-				crc64Hash := crc64.New(crc64.MakeTable(crc64.ISO))
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
-					crc64Hash.Reset()
-					_, _ = crc64Hash.Write(target[i : i+n])
-					Count += int(crc64Hash.Sum64())
-				}
-			})
-			b.Run(fmt.Sprintf("type:xxhash;hash:64 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:xxhash;hash:64bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
@@ -84,7 +72,7 @@ func BenchmarkHash(b *testing.B) {
 					Count += int(xxhash.Sum64(target[i : i+n]))
 				}
 			})
-			b.Run(fmt.Sprintf("type:maphash;hash:64 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:maphash;hash:64bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
@@ -95,7 +83,7 @@ func BenchmarkHash(b *testing.B) {
 					Count += int(hash.Sum64())
 				}
 			})
-			b.Run(fmt.Sprintf("type:xxh3;hash:64 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:xxh3;hash:64bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
@@ -103,7 +91,7 @@ func BenchmarkHash(b *testing.B) {
 					Count += int(xxh3.Hash(target[i : i+n]))
 				}
 			})
-			b.Run(fmt.Sprintf("type:combined;hash:64 bit;bytes:%v", n), func(b *testing.B) {
+			b.Run(fmt.Sprintf("type:combined;hash:64bit;bytes:%v", n), func(b *testing.B) {
 				target := make([]byte, n+b.N)
 				rand.Read(target)
 				b.ResetTimer()
